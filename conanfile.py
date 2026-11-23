@@ -9,17 +9,19 @@ class GlazerConan(ConanFile):
     version = "0.1.0"  # lockstep with glazed; version file (source of truth)
     description = "Glaze OpenGL binding generator CLI tool"
     license = "MIT"
-    python_requires = "xenoide-base/0.1.0"
+    python_requires = "xenoide-base/0.1.1"
     python_requires_extend = "xenoide-base.XenoideCMake"
     package_type = "application"
     build_info_prefix = "GLAZE"
-    capture_commit = False
+    capture_commit = True
 
     options = {}
 
     def init(self):
         super().init()
-        self.options.with_tests = False
+        # The unit suite is the product's safety net; a default build must
+        # exercise it (a task that "passes" with 0 tests hides regressions).
+        self.options.with_tests = True
 
     exports_sources = (
         "CMakeLists.txt",

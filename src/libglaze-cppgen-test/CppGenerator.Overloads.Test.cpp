@@ -11,28 +11,27 @@ using glaze::testfixtures::loadMiniRegistry;
 
 namespace {
 
-std::string generateGlHpp() {
-    const auto registry = loadMiniRegistry();
-    CppGenerator gen{registry};
-    const auto files = gen.generate("gl", "4.5");
-    return files.at("include/glaze/gl.hpp");
-}
+    std::string generateGlHpp() {
+        const auto registry = loadMiniRegistry();
+        CppGenerator gen{registry};
+        const auto files = gen.generate("gl", "4.5");
+        return files.at("include/glaze/gl.hpp");
+    }
 
-std::string generateGlHandleHpp() {
-    const auto registry = loadMiniRegistry();
-    CppGenerator gen{registry};
-    const auto files = gen.generate("gl", "4.5");
-    return files.at("include/glaze/gl_handle.hpp");
-}
+    std::string generateGlHandleHpp() {
+        const auto registry = loadMiniRegistry();
+        CppGenerator gen{registry};
+        const auto files = gen.generate("gl", "4.5");
+        return files.at("include/glaze/gl_handle.hpp");
+    }
 
-bool contains(const std::string &haystack, std::string_view needle) {
-    return haystack.find(needle) != std::string::npos;
-}
+    bool contains(const std::string &haystack, std::string_view needle) {
+        return haystack.find(needle) != std::string::npos;
+    }
 
 } // namespace
 
-TEST_CASE("gl.hpp emits a template ArrayView overload for glBufferData uploads",
-          "[glaze][cppgen][overloads]") {
+TEST_CASE("gl.hpp emits a template ArrayView overload for glBufferData uploads", "[glaze][cppgen][overloads]") {
     const auto hpp = generateGlHpp();
     REQUIRE(contains(hpp, "ArrayView"));
     REQUIRE(contains(hpp, "template <typename T>"));
@@ -43,8 +42,7 @@ TEST_CASE("gl.hpp emits a template ArrayView overload for glBufferData uploads",
     REQUIRE(contains(hpp, "data.data()"));
 }
 
-TEST_CASE("gl.hpp emits a scalar-query overload returning GLint for glGetShaderiv",
-          "[glaze][cppgen][overloads]") {
+TEST_CASE("gl.hpp emits a scalar-query overload returning GLint for glGetShaderiv", "[glaze][cppgen][overloads]") {
     const auto hpp = generateGlHpp();
     // The scalar query overload returns GLint by value (it drops the trailing
     // GLint* params pointer from the signature). Look for the distinctive
@@ -54,8 +52,7 @@ TEST_CASE("gl.hpp emits a scalar-query overload returning GLint for glGetShaderi
     REQUIRE(contains(hpp, "::glGetShaderiv"));
 }
 
-TEST_CASE("gl.hpp emits a zero-arg info-log self-query overload",
-          "[glaze][cppgen][overloads]") {
+TEST_CASE("gl.hpp emits a zero-arg info-log self-query overload", "[glaze][cppgen][overloads]") {
     const auto hpp = generateGlHpp();
     // The InfoLog self-query overload queries GL_INFO_LOG_LENGTH internally
     // via the paired Get*iv function and returns std::string.
@@ -65,8 +62,7 @@ TEST_CASE("gl.hpp emits a zero-arg info-log self-query overload",
     REQUIRE(contains(hpp, "std::string result"));
 }
 
-TEST_CASE("gl.hpp emits a std::string-returning overload for GLchar* output buffers",
-          "[glaze][cppgen][overloads]") {
+TEST_CASE("gl.hpp emits a std::string-returning overload for GLchar* output buffers", "[glaze][cppgen][overloads]") {
     const auto hpp = generateGlHpp();
     // The canonical (raw pointer) overload AND the string overload coexist.
     REQUIRE(contains(hpp, "GetShaderInfoLogFn"));
@@ -80,8 +76,7 @@ TEST_CASE("gl.hpp emits a std::string-returning overload for GLchar* output buff
     REQUIRE(hpp.find("result.resize", pos) != std::string::npos);
 }
 
-TEST_CASE("gl.hpp emits singular genBuffer/deleteBuffer helpers",
-          "[glaze][cppgen][overloads]") {
+TEST_CASE("gl.hpp emits singular genBuffer/deleteBuffer helpers", "[glaze][cppgen][overloads]") {
     const auto hpp = generateGlHpp();
     REQUIRE(contains(hpp, "GenBuffersFn"));
     REQUIRE(contains(hpp, "DeleteBuffersFn"));
@@ -96,8 +91,7 @@ TEST_CASE("gl.hpp emits singular genBuffer/deleteBuffer helpers",
     REQUIRE(contains(hpp, "reinterpret_cast<const GLuint*>(&obj)"));
 }
 
-TEST_CASE("gl_handle.hpp emits overloaded handle methods that delegate to functors",
-          "[glaze][cppgen][overloads]") {
+TEST_CASE("gl_handle.hpp emits overloaded handle methods that delegate to functors", "[glaze][cppgen][overloads]") {
     const auto handle = generateGlHandleHpp();
     // handle::Shader has canonical + scalar + string + infolog-self-query
     // overloads for getShaderInfoLog. Verify the zero-arg variant (no params)

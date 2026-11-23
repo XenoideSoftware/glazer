@@ -8,110 +8,106 @@ using namespace glaze::model;
 
 namespace {
 
-//! Build a hand-crafted Registry that mirrors the Python MINI_XML fixture.
-//! Two feature versions for gl (1.0 and 3.3), two commands, two enum groups,
-//! one extension covering ARB. Used by most tests in this file.
-Registry makeFixture() {
-    std::vector<Type> types{
-        Type{"GLenum", "typedef unsigned int GLenum;", std::nullopt, std::nullopt},
-        Type{"GLuint", "typedef unsigned int GLuint;", std::nullopt, std::nullopt},
-        Type{"GLbitfield", "typedef unsigned int GLbitfield;", std::nullopt, std::nullopt},
-    };
+    //! Build a hand-crafted Registry that mirrors the Python MINI_XML fixture.
+    //! Two feature versions for gl (1.0 and 3.3), two commands, two enum groups,
+    //! one extension covering ARB. Used by most tests in this file.
+    Registry makeFixture() {
+        std::vector<Type> types{
+            Type{"GLenum", "typedef unsigned int GLenum;", std::nullopt, std::nullopt},
+            Type{"GLuint", "typedef unsigned int GLuint;", std::nullopt, std::nullopt},
+            Type{"GLbitfield", "typedef unsigned int GLbitfield;", std::nullopt, std::nullopt},
+        };
 
-    Enum colorBit{"GL_COLOR_BUFFER_BIT", "0x00004000",
-                  {"ClearBufferMask"}, std::nullopt, std::nullopt};
-    Enum depthBit{"GL_DEPTH_BUFFER_BIT", "0x00000100",
-                  {"ClearBufferMask"}, std::nullopt, std::nullopt};
+        Enum colorBit{"GL_COLOR_BUFFER_BIT", "0x00004000", {"ClearBufferMask"}, std::nullopt, std::nullopt};
+        Enum depthBit{"GL_DEPTH_BUFFER_BIT", "0x00000100", {"ClearBufferMask"}, std::nullopt, std::nullopt};
 
-    EnumGroup clearMask;
-    clearMask.namespaceName = "GL";
-    clearMask.group = "ClearBufferMask";
-    clearMask.enumGroupType = "bitmask";
-    clearMask.enums = {{"GL_COLOR_BUFFER_BIT", colorBit},
-                      {"GL_DEPTH_BUFFER_BIT", depthBit}};
+        EnumGroup clearMask;
+        clearMask.namespaceName = "GL";
+        clearMask.group = "ClearBufferMask";
+        clearMask.enumGroupType = "bitmask";
+        clearMask.enums = {{"GL_COLOR_BUFFER_BIT", colorBit}, {"GL_DEPTH_BUFFER_BIT", depthBit}};
 
-    std::vector<EnumGroup> enumGroups{clearMask};
+        std::vector<EnumGroup> enumGroups{clearMask};
 
-    CommandParam clearMaskParam;
-    clearMaskParam.name = "mask";
-    clearMaskParam.typeParts = {"GLbitfield"};
-    clearMaskParam.group = "ClearBufferMask";
+        CommandParam clearMaskParam;
+        clearMaskParam.name = "mask";
+        clearMaskParam.typeParts = {"GLbitfield"};
+        clearMaskParam.group = "ClearBufferMask";
 
-    Command glClear;
-    glClear.name = "glClear";
-    glClear.returnType = TypeDecl{"void", false, false};
-    glClear.returnTypeStr = "void";
-    glClear.params = {clearMaskParam};
+        Command glClear;
+        glClear.name = "glClear";
+        glClear.returnType = TypeDecl{"void", false, false};
+        glClear.returnTypeStr = "void";
+        glClear.params = {clearMaskParam};
 
-    CommandParam bufferParam;
-    bufferParam.name = "buffer";
-    bufferParam.typeParts = {"GLuint"};
-    bufferParam.classStr = "buffer";
+        CommandParam bufferParam;
+        bufferParam.name = "buffer";
+        bufferParam.typeParts = {"GLuint"};
+        bufferParam.classStr = "buffer";
 
-    CommandParam targetParam;
-    targetParam.name = "target";
-    targetParam.typeParts = {"GLenum"};
-    targetParam.group = "BufferTarget";
+        CommandParam targetParam;
+        targetParam.name = "target";
+        targetParam.typeParts = {"GLenum"};
+        targetParam.group = "BufferTarget";
 
-    Command glBindBuffer;
-    glBindBuffer.name = "glBindBuffer";
-    glBindBuffer.returnType = TypeDecl{"void", false, false};
-    glBindBuffer.returnTypeStr = "void";
-    glBindBuffer.params = {targetParam, bufferParam};
+        Command glBindBuffer;
+        glBindBuffer.name = "glBindBuffer";
+        glBindBuffer.returnType = TypeDecl{"void", false, false};
+        glBindBuffer.returnTypeStr = "void";
+        glBindBuffer.params = {targetParam, bufferParam};
 
-    Command glDeleteBuffers;
-    glDeleteBuffers.name = "glDeleteBuffers";
-    glDeleteBuffers.returnType = TypeDecl{"void", false, false};
-    glDeleteBuffers.returnTypeStr = "void";
-    CommandParam n;
-    n.name = "n";
-    n.typeParts = {"GLsizei"};
-    CommandParam buffers;
-    buffers.name = "buffers";
-    buffers.typeParts = {"const", "GLuint", "*"};
-    buffers.classStr = "buffer";
-    glDeleteBuffers.params = {n, buffers};
+        Command glDeleteBuffers;
+        glDeleteBuffers.name = "glDeleteBuffers";
+        glDeleteBuffers.returnType = TypeDecl{"void", false, false};
+        glDeleteBuffers.returnTypeStr = "void";
+        CommandParam n;
+        n.name = "n";
+        n.typeParts = {"GLsizei"};
+        CommandParam buffers;
+        buffers.name = "buffers";
+        buffers.typeParts = {"const", "GLuint", "*"};
+        buffers.classStr = "buffer";
+        glDeleteBuffers.params = {n, buffers};
 
-    std::vector<Command> commands{glClear, glBindBuffer, glDeleteBuffers};
+        std::vector<Command> commands{glClear, glBindBuffer, glDeleteBuffers};
 
-    Feature gl10;
-    gl10.api = "gl";
-    gl10.name = "GL_VERSION_1_0";
-    gl10.number = "1.0";
-    Require r10;
-    r10.enums.push_back(EnumRef{"GL_COLOR_BUFFER_BIT", std::nullopt});
-    r10.enums.push_back(EnumRef{"GL_DEPTH_BUFFER_BIT", std::nullopt});
-    r10.commands.push_back(CommandRef{"glClear", std::nullopt});
-    gl10.requireList.push_back(r10);
+        Feature gl10;
+        gl10.api = "gl";
+        gl10.name = "GL_VERSION_1_0";
+        gl10.number = "1.0";
+        Require r10;
+        r10.enums.push_back(EnumRef{"GL_COLOR_BUFFER_BIT", std::nullopt});
+        r10.enums.push_back(EnumRef{"GL_DEPTH_BUFFER_BIT", std::nullopt});
+        r10.commands.push_back(CommandRef{"glClear", std::nullopt});
+        gl10.requireList.push_back(r10);
 
-    Feature gl15;
-    gl15.api = "gl";
-    gl15.name = "GL_VERSION_1_5";
-    gl15.number = "1.5";
-    Require r15;
-    r15.commands.push_back(CommandRef{"glBindBuffer", std::nullopt});
-    r15.commands.push_back(CommandRef{"glDeleteBuffers", std::nullopt});
-    gl15.requireList.push_back(r15);
+        Feature gl15;
+        gl15.api = "gl";
+        gl15.name = "GL_VERSION_1_5";
+        gl15.number = "1.5";
+        Require r15;
+        r15.commands.push_back(CommandRef{"glBindBuffer", std::nullopt});
+        r15.commands.push_back(CommandRef{"glDeleteBuffers", std::nullopt});
+        gl15.requireList.push_back(r15);
 
-    Feature gl32;
-    gl32.api = "gl";
-    gl32.name = "GL_VERSION_3_2";
-    gl32.number = "3.2";
-    Remove coreRemove;
-    coreRemove.profile = "core";
-    coreRemove.enums.push_back(EnumRef{"GL_DEPTH_BUFFER_BIT", std::nullopt});
-    gl32.removeList.push_back(coreRemove);
+        Feature gl32;
+        gl32.api = "gl";
+        gl32.name = "GL_VERSION_3_2";
+        gl32.number = "3.2";
+        Remove coreRemove;
+        coreRemove.profile = "core";
+        coreRemove.enums.push_back(EnumRef{"GL_DEPTH_BUFFER_BIT", std::nullopt});
+        gl32.removeList.push_back(coreRemove);
 
-    std::vector<Feature> features{gl10, gl15, gl32};
+        std::vector<Feature> features{gl10, gl15, gl32};
 
-    Extension ext;
-    ext.name = "GL_ARB_buffer_storage";
-    ext.supported = {"gl"};
-    std::vector<Extension> extensions{ext};
+        Extension ext;
+        ext.name = "GL_ARB_buffer_storage";
+        ext.supported = {"gl"};
+        std::vector<Extension> extensions{ext};
 
-    return Registry{std::move(types), std::move(enumGroups), std::move(commands),
-                    std::move(features), std::move(extensions)};
-}
+        return Registry{std::move(types), std::move(enumGroups), std::move(commands), std::move(features), std::move(extensions)};
+    }
 
 } // namespace
 
@@ -139,8 +135,7 @@ TEST_CASE("Registry indexes commands by first-param class", "[glaze][model][regi
     REQUIRE(registry.commandsForObjectClass("nonexistent") == nullptr);
 }
 
-TEST_CASE("Registry indexes commands whose first param does carry a class",
-          "[glaze][model][registry]") {
+TEST_CASE("Registry indexes commands whose first param does carry a class", "[glaze][model][registry]") {
     // Build a minimal fixture where glClearBufferData's first param is a
     // buffer handle — this exercises the object_dict indexing path.
     Command glClearBufferData;
@@ -200,8 +195,7 @@ TEST_CASE("Registry::extensionsForApi resolves virtual APIs", "[glaze][model][re
     REQUIRE(virtualProfile.front().name == "GL_ARB_buffer_storage");
 }
 
-TEST_CASE("Registry::consolidate flattens requires up to version",
-          "[glaze][model][registry][consolidate]") {
+TEST_CASE("Registry::consolidate flattens requires up to version", "[glaze][model][registry][consolidate]") {
     const auto registry = makeFixture();
     const auto snap = registry.consolidate("gl", "1.5");
     REQUIRE(snap.commands.count("glClear") == 1);
@@ -211,8 +205,7 @@ TEST_CASE("Registry::consolidate flattens requires up to version",
     REQUIRE(snap.enums.count("GL_DEPTH_BUFFER_BIT") == 1);
 }
 
-TEST_CASE("Registry::consolidate strips core removes on real gl",
-          "[glaze][model][registry][consolidate]") {
+TEST_CASE("Registry::consolidate strips core removes on real gl", "[glaze][model][registry][consolidate]") {
     const auto registry = makeFixture();
     const auto snap = registry.consolidate("gl", "3.2");
     // The fixture removes GL_DEPTH_BUFFER_BIT at 3.2 under the core profile.
@@ -220,8 +213,7 @@ TEST_CASE("Registry::consolidate strips core removes on real gl",
     REQUIRE(snap.enums.count("GL_DEPTH_BUFFER_BIT") == 0);
 }
 
-TEST_CASE("Registry::consolidate preserves symbols on gl_compat",
-          "[glaze][model][registry][consolidate][gl_compat]") {
+TEST_CASE("Registry::consolidate preserves symbols on gl_compat", "[glaze][model][registry][consolidate][gl_compat]") {
     const auto registry = makeFixture();
     const auto snap = registry.consolidate("gl_compat", "3.2");
     // gl_compat skips <remove profile="core">, so GL_DEPTH_BUFFER_BIT stays.

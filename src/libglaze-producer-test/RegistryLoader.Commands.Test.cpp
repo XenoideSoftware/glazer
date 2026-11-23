@@ -17,8 +17,7 @@ TEST_CASE("Command parser reads glClear and its group", "[glaze][producer][comma
     REQUIRE(*clear->params.front().group == "ClearBufferMask");
 }
 
-TEST_CASE("Command parser reads glGetString with pointer return type",
-          "[glaze][producer][commands]") {
+TEST_CASE("Command parser reads glGetString with pointer return type", "[glaze][producer][commands]") {
     const auto registry = loadMiniRegistry();
     const auto *getString = registry.findCommand("glGetString");
     REQUIRE(getString != nullptr);
@@ -27,8 +26,7 @@ TEST_CASE("Command parser reads glGetString with pointer return type",
     REQUIRE(getString->returnType.isPointer);
 }
 
-TEST_CASE("Command parser picks up param class attributes",
-          "[glaze][producer][commands]") {
+TEST_CASE("Command parser picks up param class attributes", "[glaze][producer][commands]") {
     const auto registry = loadMiniRegistry();
     const auto *bindBuffer = registry.findCommand("glBindBuffer");
     REQUIRE(bindBuffer != nullptr);
@@ -37,8 +35,7 @@ TEST_CASE("Command parser picks up param class attributes",
     REQUIRE(*bindBuffer->params[1].classStr == "buffer");
 }
 
-TEST_CASE("commandsForObjectClass indexes by first-param class",
-          "[glaze][producer][commands]") {
+TEST_CASE("commandsForObjectClass indexes by first-param class", "[glaze][producer][commands]") {
     const auto registry = loadMiniRegistry();
     // glDeleteProgram's first param has class="program", so it's indexed.
     const auto *programCommands = registry.commandsForObjectClass("program");
@@ -58,8 +55,7 @@ TEST_CASE("commandsForObjectClass indexes by first-param class",
     REQUIRE(foundNamedBufferData);
 }
 
-TEST_CASE("Commands across multiple <commands> blocks are parsed",
-          "[glaze][producer][commands]") {
+TEST_CASE("Commands across multiple <commands> blocks are parsed", "[glaze][producer][commands]") {
     const auto registry = loadMiniRegistry();
     // glMakeBufferResidentNV lives in the second <commands> block after the
     // gles2 feature — make sure the parser picks up both blocks.

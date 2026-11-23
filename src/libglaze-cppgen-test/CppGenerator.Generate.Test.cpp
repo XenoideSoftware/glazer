@@ -19,8 +19,7 @@ TEST_CASE("CppGenerator produces three output files", "[glaze][cppgen][generate]
     REQUIRE(files.count("include/glaze/raii.hpp") == 1);
 }
 
-TEST_CASE("Main gl.hpp contains the expected top-level structure",
-          "[glaze][cppgen][generate]") {
+TEST_CASE("Main gl.hpp contains the expected top-level structure", "[glaze][cppgen][generate]") {
     const auto registry = loadMiniRegistry();
     CppGenerator gen{registry};
     const auto files = gen.generate("gl", "4.5");
@@ -31,8 +30,7 @@ TEST_CASE("Main gl.hpp contains the expected top-level structure",
     REQUIRE(hpp.find("namespace glaze") != std::string::npos);
 }
 
-TEST_CASE("gl.hpp contains strong handle types discovered from MINI_XML",
-          "[glaze][cppgen][handles]") {
+TEST_CASE("gl.hpp contains strong handle types discovered from MINI_XML", "[glaze][cppgen][handles]") {
     const auto registry = loadMiniRegistry();
     CppGenerator gen{registry};
     const auto files = gen.generate("gl", "4.5");
@@ -45,8 +43,7 @@ TEST_CASE("gl.hpp contains strong handle types discovered from MINI_XML",
     REQUIRE(hpp.find("struct Shader") != std::string::npos);
 }
 
-TEST_CASE("gl.hpp contains enum classes and the bitmask bridge",
-          "[glaze][cppgen][enums]") {
+TEST_CASE("gl.hpp contains enum classes and the bitmask bridge", "[glaze][cppgen][enums]") {
     const auto registry = loadMiniRegistry();
     CppGenerator gen{registry};
     const auto files = gen.generate("gl", "4.5");
@@ -59,8 +56,7 @@ TEST_CASE("gl.hpp contains enum classes and the bitmask bridge",
     REQUIRE(hpp.find("enum class BufferTarget") != std::string::npos);
 }
 
-TEST_CASE("gl.hpp contains functors that bridge to the C function pointers",
-          "[glaze][cppgen][functors]") {
+TEST_CASE("gl.hpp contains functors that bridge to the C function pointers", "[glaze][cppgen][functors]") {
     const auto registry = loadMiniRegistry();
     CppGenerator gen{registry};
     const auto files = gen.generate("gl", "4.5");
@@ -106,14 +102,12 @@ TEST_CASE("raii.hpp is shipped verbatim with the expected header", "[glaze][cppg
     REQUIRE(raii.find("Traits") != std::string::npos);
 }
 
-TEST_CASE("CustomNameTransform retargets emitted functor names",
-          "[glaze][cppgen][extension]") {
+TEST_CASE("CustomNameTransform retargets emitted functor names", "[glaze][cppgen][extension]") {
     struct MyNames : public glaze::codegen::NameTransform {
         std::string transformCommandName(std::string_view glName) const override {
             // Prefix every functor name with "my_" to prove the extension
             // mechanism propagates into the generated output.
-            return std::string{"my_"} +
-                   glaze::codegen::DefaultNameTransform{}.transformCommandName(glName);
+            return std::string{"my_"} + glaze::codegen::DefaultNameTransform{}.transformCommandName(glName);
         }
     };
 

@@ -19,8 +19,7 @@ TEST_CASE("CGenerator produces gl.h and gl.c keys", "[glaze][cgen][generate]") {
     REQUIRE(files.count("src/gl.c") == 1);
 }
 
-TEST_CASE("CGenerator header includes enum macros and command typedefs",
-          "[glaze][cgen][generate]") {
+TEST_CASE("CGenerator header includes enum macros and command typedefs", "[glaze][cgen][generate]") {
     const auto registry = loadMiniRegistry();
     CGenerator gen{registry};
     const auto files = gen.generate("gl", "4.5");
@@ -33,8 +32,7 @@ TEST_CASE("CGenerator header includes enum macros and command typedefs",
     REQUIRE(header.find("glazeLoadFunctions") != std::string::npos);
 }
 
-TEST_CASE("CGenerator source defines function pointers and the loader",
-          "[glaze][cgen][generate]") {
+TEST_CASE("CGenerator source defines function pointers and the loader", "[glaze][cgen][generate]") {
     const auto registry = loadMiniRegistry();
     CGenerator gen{registry};
     const auto files = gen.generate("gl", "4.5");
@@ -46,8 +44,7 @@ TEST_CASE("CGenerator source defines function pointers and the loader",
     REQUIRE(source.find("glazeHasExtension") != std::string::npos);
 }
 
-TEST_CASE("CGenerator opt-in extensions emit guard and flag",
-          "[glaze][cgen][extensions]") {
+TEST_CASE("CGenerator opt-in extensions emit guard and flag", "[glaze][cgen][extensions]") {
     const auto registry = loadMiniRegistry();
     CGenerator gen{registry};
     const auto files = gen.generate("gl", "4.5", /*vendors*/ {"ARB"});
@@ -58,8 +55,7 @@ TEST_CASE("CGenerator opt-in extensions emit guard and flag",
     REQUIRE(header.find("GLAZE_EXT_GL_ARB_buffer_storage") != std::string::npos);
 }
 
-TEST_CASE("CGenerator omits extensions when neither filter is set",
-          "[glaze][cgen][extensions]") {
+TEST_CASE("CGenerator omits extensions when neither filter is set", "[glaze][cgen][extensions]") {
     const auto registry = loadMiniRegistry();
     CGenerator gen{registry};
     const auto files = gen.generate("gl", "4.5");
@@ -74,8 +70,7 @@ TEST_CASE("CGenerator throws on unknown api/version", "[glaze][cgen][errors]") {
     REQUIRE_THROWS_AS(gen.generate("not-a-real-api", "1.0"), std::invalid_argument);
 }
 
-TEST_CASE("CGenerator::validateExtensionFilters flags unknown vendors",
-          "[glaze][cgen][validate]") {
+TEST_CASE("CGenerator::validateExtensionFilters flags unknown vendors", "[glaze][cgen][validate]") {
     const auto registry = loadMiniRegistry();
     CGenerator gen{registry};
     const auto errors = gen.validateExtensionFilters("gl", {"FOO"}, {});

@@ -15,24 +15,24 @@ using glaze::testfixtures::kMiniXml;
 
 namespace {
 
-//! Write MINI_XML to a per-test temp file and return its path. Each call
-//! picks a unique suffix so parallel test runs do not collide.
-std::filesystem::path writeMiniXml(const std::string &tag) {
-    auto path = std::filesystem::temp_directory_path() / ("glaze-core-" + tag + ".xml");
-    std::ofstream out{path, std::ios::binary | std::ios::trunc};
-    out.write(kMiniXml.data(), static_cast<std::streamsize>(kMiniXml.size()));
-    return path;
-}
+    //! Write MINI_XML to a per-test temp file and return its path. Each call
+    //! picks a unique suffix so parallel test runs do not collide.
+    std::filesystem::path writeMiniXml(const std::string &tag) {
+        auto path = std::filesystem::temp_directory_path() / ("glaze-core-" + tag + ".xml");
+        std::ofstream out{path, std::ios::binary | std::ios::trunc};
+        out.write(kMiniXml.data(), static_cast<std::streamsize>(kMiniXml.size()));
+        return path;
+    }
 
-//! Build an isolated output directory for each test case. std::filesystem
-//! happily overwrites existing files so repeat runs stay deterministic.
-std::filesystem::path makeOutputDir(const std::string &tag) {
-    auto dir = std::filesystem::temp_directory_path() / ("glaze-core-out-" + tag);
-    std::error_code ec;
-    std::filesystem::remove_all(dir, ec);
-    std::filesystem::create_directories(dir);
-    return dir;
-}
+    //! Build an isolated output directory for each test case. std::filesystem
+    //! happily overwrites existing files so repeat runs stay deterministic.
+    std::filesystem::path makeOutputDir(const std::string &tag) {
+        auto dir = std::filesystem::temp_directory_path() / ("glaze-core-out-" + tag);
+        std::error_code ec;
+        std::filesystem::remove_all(dir, ec);
+        std::filesystem::create_directories(dir);
+        return dir;
+    }
 
 } // namespace
 
@@ -72,12 +72,10 @@ TEST_CASE("BindingGenerator::listApis returns gl and gles2", "[glaze][core][list
     std::filesystem::remove(xmlPath);
 }
 
-TEST_CASE("BindingGenerator propagates custom NameTransform into the C++ output",
-          "[glaze][core][extension]") {
+TEST_CASE("BindingGenerator propagates custom NameTransform into the C++ output", "[glaze][core][extension]") {
     struct MyNames : public glaze::codegen::NameTransform {
         std::string transformCommandName(std::string_view glName) const override {
-            return std::string{"myfacade_"} +
-                   glaze::codegen::DefaultNameTransform{}.transformCommandName(glName);
+            return std::string{"myfacade_"} + glaze::codegen::DefaultNameTransform{}.transformCommandName(glName);
         }
     };
 

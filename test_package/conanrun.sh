@@ -1,1 +1,0 @@
-. "/home/fapablaza/Desktop/xenoide.dev/glazer/test_package/conanrunenv-release-x86_64.sh"

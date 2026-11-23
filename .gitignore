@@ -1,9 +1,9 @@
 
 # Xenoide devkit
-.devkit/
-.deps/
-.conan2/
-.xenoide/
+/.devkit
+/.deps
+/.conan2
+/.xenoide
 build/
 build-*/
 test_package/build/
@@ -22,3 +22,8 @@ Testing/
 *.profdata
 __pycache__/
 *.pyc
+
+# Conan-generated test_package environment scripts
+test_package/conan*.sh
+test_package/deactivate_*.sh
+test_package/*env-*.sh

@@ -4,8 +4,7 @@
 
 using glaze::testfixtures::loadMiniRegistry;
 
-TEST_CASE("Feature parser produces five gl features and one gles2 feature",
-          "[glaze][producer][features]") {
+TEST_CASE("Feature parser produces five gl features and one gles2 feature", "[glaze][producer][features]") {
     const auto registry = loadMiniRegistry();
     const auto *glFeatures = registry.featuresForApi("gl");
     REQUIRE(glFeatures != nullptr);
@@ -19,8 +18,7 @@ TEST_CASE("Feature parser produces five gl features and one gles2 feature",
     REQUIRE(glesFeatures->front().number == "2.0");
 }
 
-TEST_CASE("Feature parser captures the GL_VERSION_3_1 core remove",
-          "[glaze][producer][features]") {
+TEST_CASE("Feature parser captures the GL_VERSION_3_1 core remove", "[glaze][producer][features]") {
     const auto registry = loadMiniRegistry();
     const auto *glFeatures = registry.featuresForApi("gl");
     REQUIRE(glFeatures != nullptr);
@@ -38,8 +36,7 @@ TEST_CASE("Feature parser captures the GL_VERSION_3_1 core remove",
     REQUIRE(found31);
 }
 
-TEST_CASE("Registry::consolidate flattens requires up to gl 4.5",
-          "[glaze][producer][features]") {
+TEST_CASE("Registry::consolidate flattens requires up to gl 4.5", "[glaze][producer][features]") {
     const auto registry = loadMiniRegistry();
     const auto snap = registry.consolidate("gl", "4.5");
     REQUIRE(snap.commands.count("glClear") == 1);

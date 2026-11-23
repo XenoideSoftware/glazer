@@ -2,16 +2,16 @@
 
 namespace glaze::model {
 
-std::string toCString(const TypeDecl &decl) {
-    std::string out;
-    if (decl.isConst) {
-        out.append("const ");
+    std::string toCString(const TypeDecl &decl) {
+        std::string out;
+        if (decl.isConst) {
+            out.append("const ");
+        }
+        out.append(decl.name);
+        if (decl.isPointer) {
+            out.push_back('*');
+        }
+        return out;
     }
-    out.append(decl.name);
-    if (decl.isPointer) {
-        out.push_back('*');
-    }
-    return out;
-}
 
 } // namespace glaze::model

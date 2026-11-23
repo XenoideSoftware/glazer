@@ -4,8 +4,7 @@
 
 using glaze::testfixtures::loadMiniRegistry;
 
-TEST_CASE("Enum parser populates groups and per-enum lookups",
-          "[glaze][producer][enums]") {
+TEST_CASE("Enum parser populates groups and per-enum lookups", "[glaze][producer][enums]") {
     const auto registry = loadMiniRegistry();
     REQUIRE(registry.findEnum("GL_COLOR_BUFFER_BIT") != nullptr);
     REQUIRE(registry.findEnum("GL_ARRAY_BUFFER") != nullptr);

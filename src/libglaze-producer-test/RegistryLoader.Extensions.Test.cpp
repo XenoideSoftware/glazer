@@ -11,8 +11,7 @@ TEST_CASE("Extension parser produces four extensions", "[glaze][producer][extens
     REQUIRE(registry.extensions().size() == 4);
 
     const auto has = [&](const std::string &name) {
-        return std::any_of(registry.extensions().begin(), registry.extensions().end(),
-                           [&](const auto &ext) { return ext.name == name; });
+        return std::any_of(registry.extensions().begin(), registry.extensions().end(), [&](const auto &ext) { return ext.name == name; });
     };
     REQUIRE(has("GL_ARB_buffer_storage"));
     REQUIRE(has("GL_ARB_draw_instanced"));
@@ -20,8 +19,7 @@ TEST_CASE("Extension parser produces four extensions", "[glaze][producer][extens
     REQUIRE(has("GL_KHR_debug"));
 }
 
-TEST_CASE("Extension parser splits 'supported' on the pipe delimiter",
-          "[glaze][producer][extensions]") {
+TEST_CASE("Extension parser splits 'supported' on the pipe delimiter", "[glaze][producer][extensions]") {
     const auto registry = loadMiniRegistry();
     for (const auto &ext : registry.extensions()) {
         if (ext.name == "GL_ARB_buffer_storage") {
@@ -36,8 +34,7 @@ TEST_CASE("Extension parser splits 'supported' on the pipe delimiter",
     }
 }
 
-TEST_CASE("extensionsForApi returns gl-supported extensions",
-          "[glaze][producer][extensions]") {
+TEST_CASE("extensionsForApi returns gl-supported extensions", "[glaze][producer][extensions]") {
     const auto registry = loadMiniRegistry();
     const auto glExts = registry.extensionsForApi("gl");
     REQUIRE(glExts.size() == 4);

@@ -8,8 +8,7 @@
 
 using namespace glaze::model;
 
-TEST_CASE("isCapitalized recognizes single-word CamelCase shapes",
-          "[glaze][model][string]") {
+TEST_CASE("isCapitalized recognizes single-word CamelCase shapes", "[glaze][model][string]") {
     REQUIRE(isCapitalized("Buffer"));
     REQUIRE(isCapitalized("ARB"));
     REQUIRE(isCapitalized("A"));
@@ -23,11 +22,9 @@ TEST_CASE("isCapitalized recognizes single-word CamelCase shapes",
 
 TEST_CASE("splitCapitalized splits multi-word CamelCase", "[glaze][model][string]") {
     REQUIRE(splitCapitalized("BufferTarget") == std::vector<std::string>{"Buffer", "Target"});
-    REQUIRE(splitCapitalized("BufferTargetARB") ==
-            std::vector<std::string>{"Buffer", "Target", "ARB"});
+    REQUIRE(splitCapitalized("BufferTargetARB") == std::vector<std::string>{"Buffer", "Target", "ARB"});
     REQUIRE(splitCapitalized("Buffer") == std::vector<std::string>{"Buffer"});
-    REQUIRE(splitCapitalized("ClearBufferMask") ==
-            std::vector<std::string>{"Clear", "Buffer", "Mask"});
+    REQUIRE(splitCapitalized("ClearBufferMask") == std::vector<std::string>{"Clear", "Buffer", "Mask"});
     REQUIRE(splitCapitalized("GL") == std::vector<std::string>{"GL"});
 }
 

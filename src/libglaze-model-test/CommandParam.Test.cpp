@@ -6,12 +6,12 @@ using namespace glaze::model;
 
 namespace {
 
-CommandParam makeParam(std::string name, std::vector<std::string> parts) {
-    CommandParam p;
-    p.name = std::move(name);
-    p.typeParts = std::move(parts);
-    return p;
-}
+    CommandParam makeParam(std::string name, std::vector<std::string> parts) {
+        CommandParam p;
+        p.name = std::move(name);
+        p.typeParts = std::move(parts);
+        return p;
+    }
 
 } // namespace
 

@@ -5,8 +5,7 @@
 using glaze::cppgen::detail::cppKeywords;
 using glaze::cppgen::detail::sanitizeMethodName;
 
-TEST_CASE("cppKeywords contains the canonical subset from cpp_generator.py",
-          "[glaze][cppgen][keywords]") {
+TEST_CASE("cppKeywords contains the canonical subset from cpp_generator.py", "[glaze][cppgen][keywords]") {
     const auto &kws = cppKeywords();
     // Sanity-check a handful of representative entries.
     REQUIRE(kws.count("delete") == 1);
@@ -22,8 +21,7 @@ TEST_CASE("cppKeywords contains the canonical subset from cpp_generator.py",
     REQUIRE(kws.count("bindBuffer") == 0);
 }
 
-TEST_CASE("sanitizeMethodName appends '_' only to reserved names",
-          "[glaze][cppgen][keywords]") {
+TEST_CASE("sanitizeMethodName appends '_' only to reserved names", "[glaze][cppgen][keywords]") {
     REQUIRE(sanitizeMethodName(std::string{"delete"}) == "delete_");
     REQUIRE(sanitizeMethodName(std::string{"new"}) == "new_");
     REQUIRE(sanitizeMethodName(std::string{"operator"}) == "operator_");
@@ -36,8 +34,7 @@ TEST_CASE("sanitizeMethodName appends '_' only to reserved names",
     REQUIRE(sanitizeMethodName(std::string{""}) == "");
 }
 
-TEST_CASE("sanitizeMethodName string_view overload matches the string one",
-          "[glaze][cppgen][keywords]") {
+TEST_CASE("sanitizeMethodName string_view overload matches the string one", "[glaze][cppgen][keywords]") {
     const std::string_view deleteView{"delete"};
     const std::string_view clearView{"clear"};
     REQUIRE(sanitizeMethodName(deleteView) == "delete_");

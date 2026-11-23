@@ -11,25 +11,28 @@ using glaze::cli::parseListApisRegistryPath;
 
 namespace {
 
-//! Build the pointer array cxxopts expects, leaking nothing into the heap.
-struct Argv {
-    std::vector<std::string> args;
-    std::vector<const char *> ptrs;
+    //! Build the pointer array cxxopts expects, leaking nothing into the heap.
+    struct Argv {
+        std::vector<std::string> args;
+        std::vector<const char *> ptrs;
 
-    Argv(std::initializer_list<std::string> a) : args(a) {
-        ptrs.reserve(args.size());
-        for (const auto &s : args) {
-            ptrs.push_back(s.c_str());
+        Argv(std::initializer_list<std::string> a) : args(a) {
+            ptrs.reserve(args.size());
+            for (const auto &s : args) {
+                ptrs.push_back(s.c_str());
+            }
         }
-    }
-    int argc() const { return static_cast<int>(ptrs.size()); }
-    const char *const *argv() const { return ptrs.data(); }
-};
+        int argc() const {
+            return static_cast<int>(ptrs.size());
+        }
+        const char *const *argv() const {
+            return ptrs.data();
+        }
+    };
 
 } // namespace
 
-TEST_CASE("parseGenerate accepts a minimal colon-form invocation",
-          "[glaze][core][cli]") {
+TEST_CASE("parseGenerate accepts a minimal colon-form invocation", "[glaze][core][cli]") {
     const Argv argv{{"glaze", "--registry", "foo.xml", "--api", "gl:3.3", "--lang", "cpp"}};
     const auto options = parseGenerate(argv.argc(), argv.argv());
     REQUIRE(options.has_value());
@@ -41,15 +44,19 @@ TEST_CASE("parseGenerate accepts a minimal colon-form invocation",
     REQUIRE(options->languages.front() == Language::Cpp);
 }
 
-TEST_CASE("parseGenerate handles multiple --lang and --api flags",
-          "[glaze][core][cli]") {
+TEST_CASE("parseGenerate handles multiple --lang and --api flags", "[glaze][core][cli]") {
     const Argv argv{{
         "glaze",
-        "--api", "gl:3.3",
-        "--api", "gles2:3.2",
-        "--lang", "c",
-        "--lang", "cpp",
-        "--output-dir", "out",
+        "--api",
+        "gl:3.3",
+        "--api",
+        "gles2:3.2",
+        "--lang",
+        "c",
+        "--lang",
+        "cpp",
+        "--output-dir",
+        "out",
     }};
     const auto options = parseGenerate(argv.argc(), argv.argv());
     REQUIRE(options.has_value());
@@ -58,14 +65,17 @@ TEST_CASE("parseGenerate handles multiple --lang and --api flags",
     REQUIRE(options->outputDir.string() == "out");
 }
 
-TEST_CASE("parseGenerate splits comma-separated extension filters",
-          "[glaze][core][cli]") {
+TEST_CASE("parseGenerate splits comma-separated extension filters", "[glaze][core][cli]") {
     const Argv argv{{
         "glaze",
-        "--api", "gl:4.6",
-        "--lang", "c",
-        "--extension-vendors", "ARB,KHR",
-        "--extensions", "GL_NV_foo,GL_ATI_bar",
+        "--api",
+        "gl:4.6",
+        "--lang",
+        "c",
+        "--extension-vendors",
+        "ARB,KHR",
+        "--extensions",
+        "GL_NV_foo,GL_ATI_bar",
     }};
     const auto options = parseGenerate(argv.argc(), argv.argv());
     REQUIRE(options.has_value());
@@ -80,33 +90,35 @@ TEST_CASE("parseGenerate rejects a missing colon in --api", "[glaze][core][cli][
     REQUIRE_THROWS_AS(parseGenerate(argv.argc(), argv.argv()), std::invalid_argument);
 }
 
-TEST_CASE("parseGenerate requires at least one --api and --lang",
-          "[glaze][core][cli][errors]") {
+TEST_CASE("parseGenerate requires at least one --api and --lang", "[glaze][core][cli][errors]") {
     const Argv noApi{{"glaze", "--lang", "c"}};
     REQUIRE_THROWS_AS(parseGenerate(noApi.argc(), noApi.argv()), std::invalid_argument);
     const Argv noLang{{"glaze", "--api", "gl:3.3"}};
     REQUIRE_THROWS_AS(parseGenerate(noLang.argc(), noLang.argv()), std::invalid_argument);
 }
 
-TEST_CASE("parseGenerate accepts --refpages-dir",
-          "[glaze][core][cli]") {
+TEST_CASE("parseGenerate accepts --refpages-dir", "[glaze][core][cli]") {
     const Argv argv{{
         "glaze",
-        "--api", "gl:4.6",
-        "--lang", "cpp",
-        "--refpages-dir", "docs/OpenGL-Refpages",
+        "--api",
+        "gl:4.6",
+        "--lang",
+        "cpp",
+        "--refpages-dir",
+        "docs/OpenGL-Refpages",
     }};
     const auto options = parseGenerate(argv.argc(), argv.argv());
     REQUIRE(options.has_value());
     REQUIRE(options->refpagesDir == "docs/OpenGL-Refpages");
 }
 
-TEST_CASE("parseGenerate leaves refpagesDir empty by default",
-          "[glaze][core][cli]") {
+TEST_CASE("parseGenerate leaves refpagesDir empty by default", "[glaze][core][cli]") {
     const Argv argv{{
         "glaze",
-        "--api", "gl:4.6",
-        "--lang", "cpp",
+        "--api",
+        "gl:4.6",
+        "--lang",
+        "cpp",
     }};
     const auto options = parseGenerate(argv.argc(), argv.argv());
     REQUIRE(options.has_value());

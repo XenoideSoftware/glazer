@@ -19,9 +19,9 @@ using glaze::testfixtures::kMiniXml;
 
 namespace {
 
-//! One hand-crafted DocBook refpage that documents `glClear` so the doc
-//! parser has something to hand to the generators during this test.
-constexpr std::string_view kClearRefpage = R"(<?xml version="1.0"?>
+    //! One hand-crafted DocBook refpage that documents `glClear` so the doc
+    //! parser has something to hand to the generators during this test.
+    constexpr std::string_view kClearRefpage = R"(<?xml version="1.0"?>
 <refentry xmlns="http://docbook.org/ns/docbook" version="5.0" xml:id="glClear">
     <refnamediv>
         <refname>glClear</refname>
@@ -41,26 +41,24 @@ constexpr std::string_view kClearRefpage = R"(<?xml version="1.0"?>
 </refentry>
 )";
 
-std::filesystem::path makeDir(const std::string &tag) {
-    auto dir = std::filesystem::temp_directory_path() /
-               ("glaze-docbrief-" + tag);
-    std::error_code ec;
-    std::filesystem::remove_all(dir, ec);
-    std::filesystem::create_directories(dir);
-    return dir;
-}
+    std::filesystem::path makeDir(const std::string &tag) {
+        auto dir = std::filesystem::temp_directory_path() / ("glaze-docbrief-" + tag);
+        std::error_code ec;
+        std::filesystem::remove_all(dir, ec);
+        std::filesystem::create_directories(dir);
+        return dir;
+    }
 
-std::string slurp(const std::filesystem::path &path) {
-    std::ifstream in{path, std::ios::binary};
-    std::stringstream ss;
-    ss << in.rdbuf();
-    return ss.str();
-}
+    std::string slurp(const std::filesystem::path &path) {
+        std::ifstream in{path, std::ios::binary};
+        std::stringstream ss;
+        ss << in.rdbuf();
+        return ss.str();
+    }
 
 } // namespace
 
-TEST_CASE("BindingGenerator attaches doc briefs when --refpages-dir is set",
-          "[glaze][core][docs]") {
+TEST_CASE("BindingGenerator attaches doc briefs when --refpages-dir is set", "[glaze][core][docs]") {
     // Stage: registry XML + a refpages tree with a single glClear entry.
     const auto workdir = makeDir("attached");
     const auto registryPath = workdir / "gl.xml";
@@ -71,10 +69,8 @@ TEST_CASE("BindingGenerator attaches doc briefs when --refpages-dir is set",
     const auto refpagesDir = workdir / "refpages";
     std::filesystem::create_directories(refpagesDir / "gl4");
     {
-        std::ofstream out{refpagesDir / "gl4" / "glClear.xml",
-                          std::ios::binary | std::ios::trunc};
-        out.write(kClearRefpage.data(),
-                  static_cast<std::streamsize>(kClearRefpage.size()));
+        std::ofstream out{refpagesDir / "gl4" / "glClear.xml", std::ios::binary | std::ios::trunc};
+        out.write(kClearRefpage.data(), static_cast<std::streamsize>(kClearRefpage.size()));
     }
     const auto outDir = workdir / "out";
 
@@ -90,14 +86,11 @@ TEST_CASE("BindingGenerator attaches doc briefs when --refpages-dir is set",
 
     const auto hpp = slurp(outDir / "include" / "glaze" / "gl.hpp");
     const auto h = slurp(outDir / "include" / "glaze" / "gl.h");
-    REQUIRE(hpp.find("/** @brief clear buffers to preset values */") !=
-            std::string::npos);
-    REQUIRE(h.find("/** @brief clear buffers to preset values */") !=
-            std::string::npos);
+    REQUIRE(hpp.find("/**\n * @brief clear buffers to preset values") != std::string::npos);
+    REQUIRE(h.find("/**\n * @brief clear buffers to preset values") != std::string::npos);
 }
 
-TEST_CASE("BindingGenerator emits no Doxygen blocks when refpagesDir is empty",
-          "[glaze][core][docs]") {
+TEST_CASE("BindingGenerator emits no Doxygen blocks when refpagesDir is empty", "[glaze][core][docs]") {
     const auto workdir = makeDir("empty");
     const auto registryPath = workdir / "gl.xml";
     {

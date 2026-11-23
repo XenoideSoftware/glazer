@@ -11,10 +11,10 @@ class GlazedConan(ConanFile):
     version = "0.1.0"  # lockstep with glazer; version file (source of truth)
     description = "Generated OpenGL/ES bindings produced by the Glaze generator"
     license = "MIT"
-    python_requires = "xenoide-base/0.1.0"
+    python_requires = "xenoide-base/0.1.1"
     python_requires_extend = "xenoide-base.XenoideCMake"
     package_type = "library"
-    capture_commit = False
+    capture_commit = True
 
     options = {
         "apis": ["ANY"],

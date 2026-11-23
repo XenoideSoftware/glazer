@@ -9,25 +9,24 @@ using glaze::model::TypeDecl;
 
 namespace {
 
-CommandParam makeParam(std::string name, std::vector<std::string> parts) {
-    CommandParam p;
-    p.name = std::move(name);
-    p.typeParts = std::move(parts);
-    return p;
-}
+    CommandParam makeParam(std::string name, std::vector<std::string> parts) {
+        CommandParam p;
+        p.name = std::move(name);
+        p.typeParts = std::move(parts);
+        return p;
+    }
 
-Command makeCommand(std::string name, std::string returnType) {
-    Command cmd;
-    cmd.name = std::move(name);
-    cmd.returnType = TypeDecl{"void", false, false};
-    cmd.returnTypeStr = std::move(returnType);
-    return cmd;
-}
+    Command makeCommand(std::string name, std::string returnType) {
+        Command cmd;
+        cmd.name = std::move(name);
+        cmd.returnType = TypeDecl{"void", false, false};
+        cmd.returnTypeStr = std::move(returnType);
+        return cmd;
+    }
 
 } // namespace
 
-TEST_CASE("DefaultCTypeMapper joins typeParts and appends name",
-          "[glaze][codegen][typemapper]") {
+TEST_CASE("DefaultCTypeMapper joins typeParts and appends name", "[glaze][codegen][typemapper]") {
     DefaultCTypeMapper mapper;
     const auto cmd = makeCommand("glBindBuffer", "void");
 
@@ -41,8 +40,7 @@ TEST_CASE("DefaultCTypeMapper joins typeParts and appends name",
     REQUIRE(mapper.mapParamDecl(ptr, cmd) == "GLfloat* out");
 }
 
-TEST_CASE("DefaultCTypeMapper::mapReturnType returns the raw returnTypeStr",
-          "[glaze][codegen][typemapper]") {
+TEST_CASE("DefaultCTypeMapper::mapReturnType returns the raw returnTypeStr", "[glaze][codegen][typemapper]") {
     DefaultCTypeMapper mapper;
     const auto cmd = makeCommand("glGetString", "const GLubyte *");
     REQUIRE(mapper.mapReturnType(cmd) == "const GLubyte *");

@@ -15,17 +15,16 @@ using glaze::testfixtures::kMiniXml;
 
 namespace {
 
-std::filesystem::path writeTempXml() {
-    auto path = std::filesystem::temp_directory_path() / "glaze-mini.xml";
-    std::ofstream out{path, std::ios::binary | std::ios::trunc};
-    out.write(kMiniXml.data(), static_cast<std::streamsize>(kMiniXml.size()));
-    return path;
-}
+    std::filesystem::path writeTempXml() {
+        auto path = std::filesystem::temp_directory_path() / "glaze-mini.xml";
+        std::ofstream out{path, std::ios::binary | std::ios::trunc};
+        out.write(kMiniXml.data(), static_cast<std::streamsize>(kMiniXml.size()));
+        return path;
+    }
 
 } // namespace
 
-TEST_CASE("loadFromFile parses a file identical to loadFromString",
-          "[glaze][producer][loader]") {
+TEST_CASE("loadFromFile parses a file identical to loadFromString", "[glaze][producer][loader]") {
     const auto path = writeTempXml();
     const auto registry = RegistryLoader{}.loadFromFile(path.string());
     REQUIRE(registry.types().size() == 9);
@@ -36,7 +35,5 @@ TEST_CASE("loadFromFile parses a file identical to loadFromString",
 }
 
 TEST_CASE("loadFromFile throws ParseError on missing file", "[glaze][producer][loader][errors]") {
-    REQUIRE_THROWS_AS(
-        RegistryLoader{}.loadFromFile("Z:\\definitely\\not\\here\\gl.xml"),
-        ParseError);
+    REQUIRE_THROWS_AS(RegistryLoader{}.loadFromFile("Z:\\definitely\\not\\here\\gl.xml"), ParseError);
 }

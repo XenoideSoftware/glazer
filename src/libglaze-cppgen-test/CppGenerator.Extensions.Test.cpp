@@ -11,14 +11,13 @@ using glaze::testfixtures::loadMiniRegistry;
 
 namespace {
 
-bool contains(const std::string &haystack, std::string_view needle) {
-    return haystack.find(needle) != std::string::npos;
-}
+    bool contains(const std::string &haystack, std::string_view needle) {
+        return haystack.find(needle) != std::string::npos;
+    }
 
 } // namespace
 
-TEST_CASE("cppgen opt-in emits ARB extension guards and flag vars",
-          "[glaze][cppgen][extensions]") {
+TEST_CASE("cppgen opt-in emits ARB extension guards and flag vars", "[glaze][cppgen][extensions]") {
     const auto registry = loadMiniRegistry();
     CppGenerator gen{registry};
     const auto files = gen.generate("gl", "4.5", {"ARB"}, {});
@@ -34,8 +33,7 @@ TEST_CASE("cppgen opt-in emits ARB extension guards and flag vars",
     REQUIRE(contains(hpp, "inline bool ARB_draw_instanced()"));
 }
 
-TEST_CASE("cppgen extension-only commands emit functors wrapped in their guard",
-          "[glaze][cppgen][extensions]") {
+TEST_CASE("cppgen extension-only commands emit functors wrapped in their guard", "[glaze][cppgen][extensions]") {
     const auto registry = loadMiniRegistry();
     CppGenerator gen{registry};
     const auto files = gen.generate("gl", "4.5", {"ARB"}, {});
@@ -54,8 +52,7 @@ TEST_CASE("cppgen extension-only commands emit functors wrapped in their guard",
     REQUIRE(guardPos < fnPos);
 }
 
-TEST_CASE("cppgen with empty filters emits no extension block",
-          "[glaze][cppgen][extensions]") {
+TEST_CASE("cppgen with empty filters emits no extension block", "[glaze][cppgen][extensions]") {
     const auto registry = loadMiniRegistry();
     CppGenerator gen{registry};
     const auto files = gen.generate("gl", "4.5", {}, {});
@@ -68,8 +65,7 @@ TEST_CASE("cppgen with empty filters emits no extension block",
     REQUIRE_FALSE(contains(hpp, "DrawArraysInstancedARBFn"));
 }
 
-TEST_CASE("cppgen named extension filter opts in a single extension",
-          "[glaze][cppgen][extensions]") {
+TEST_CASE("cppgen named extension filter opts in a single extension", "[glaze][cppgen][extensions]") {
     const auto registry = loadMiniRegistry();
     CppGenerator gen{registry};
     const auto files = gen.generate("gl", "4.5", {}, {"GL_KHR_debug"});

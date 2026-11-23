@@ -7,18 +7,22 @@
 // trivial Traits specialization for an int handle is enough to confirm that
 // the package's `glaze::raii` component is exported correctly.
 namespace {
-struct Counter {
-    int value;
-};
+    struct Counter {
+        int value;
+    };
 } // namespace
 
 namespace glaze {
-template <>
-struct Traits<Counter> {
-    static Counter create(int seed) { return Counter{seed}; }
-    static void destroy(Counter & /*c*/) {}
-    static bool valid(const Counter &c) { return c.value > 0; }
-};
+    template <> struct Traits<Counter> {
+        static Counter create(int seed) {
+            return Counter{seed};
+        }
+        static void destroy(Counter & /*c*/) {
+        }
+        static bool valid(const Counter &c) {
+            return c.value > 0;
+        }
+    };
 } // namespace glaze
 
 int main() {

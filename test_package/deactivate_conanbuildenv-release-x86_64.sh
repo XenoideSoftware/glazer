@@ -1,2 +1,0 @@
-echo Restoring environment
-export PATH='/usr/bin:/home/fapablaza/.local/bin:/home/fapablaza/.opencode/bin:/home/fapablaza/.nvm/versions/node/v24.14.1/bin:/home/fapablaza/.local/bin:/usr/bin:/home/fapablaza/.local/bin:/home/fapablaza/.opencode/bin:/home/fapablaza/.nvm/versions/node/v24.14.1/bin:/home/fapablaza/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/fapablaza/.local/share/pnpm/bin'

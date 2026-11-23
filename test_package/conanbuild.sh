@@ -1,0 +1,1 @@
+. "/home/fapablaza/Desktop/xenoide.dev/glazer/test_package/conanbuildenv-release-x86_64.sh"

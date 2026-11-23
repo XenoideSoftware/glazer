@@ -1,0 +1,18 @@
+sources:
+  OpenGL-Registry:
+    url: https://github.com/KhronosGroup/OpenGL-Registry.git
+    commit: 6af574a14089ccfee87efe230ebcdd8742859813
+    sparse:
+      - xml/gl.xml
+  EGL-Registry:
+    url: https://github.com/KhronosGroup/EGL-Registry.git
+    commit: aa39a34729e6d20b0b982e279c351976a5c91075
+    sparse:
+      - api/KHR
+  OpenGL-Refpages:
+    url: https://github.com/KhronosGroup/OpenGL-Refpages.git
+    commit: 4bdf67a73d040f79bd7b087f5c1e588809e1f329
+    sparse:
+      - gl4
+      - es1.1
+      - es3.0

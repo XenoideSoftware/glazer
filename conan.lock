@@ -1,0 +1,14 @@
+{
+    "version": "0.5",
+    "requires": [
+        "pugixml/1.15#3c90254c9582f5f49d84bbf7f3e55e71%1782305325.841",
+        "nlohmann_json/3.12.0#2d634ab0ec8d9f56353e5ccef6d6612c%1744735883.94",
+        "inja/3.4.0#1345986c7fcedc6e3c74cfee500d65d5%1757663215.41",
+        "cxxopts/3.3.1#047ef7b8ae49e0d48a1450f4522dc041%1748330656.693"
+    ],
+    "build_requires": [],
+    "python_requires": [
+        "xenoide-base/0.1.0#08029148511e8c1348d2e8daed202a60%1795465791.2941017"
+    ],
+    "config_requires": []
+}
